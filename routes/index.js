@@ -7,8 +7,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/navigate', function(req, res, next) {
-  var params = req.query;
-  console.log(params.Body);
+  var search = req.query.Body;
+  var origin = search.split(" to ")[0]
+  var destination = search.split(" to ")[1]
+  console.log("origin: " + origin);
+  console.log("destination: " + destination);
   res.json(
     {
       "geocoded_waypoints" : [
