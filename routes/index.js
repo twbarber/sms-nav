@@ -23,6 +23,16 @@ router.get('/navigate', function(req, response, next) {
     var start = body.body.routes[0].legs[0].start_address;
     var end = body.body.routes[0].legs[0].end_address;
     var dist = body.body.routes[0].legs[0].distance.text;
+
+    var directions = body.body.routes[0].legs[0].steps;
+
+    for(var step in directions) {
+      var stepDist = directions[step].distance.text;
+      var stepInst = directions[step].html_instructions;
+
+      var strippedHtml = stepInst.replace(/<div style=\"font-size:0.9em\">/g, ". ").replace(/<\/?[^>]+(>|$)/g, "").replace(/&nbsp;/g, " ");
+      console.log(stepDist + ' - ' + strippedHtml);
+    }
     
     response.setHeader("Content-Type", "text/plain"); 
     response.send(
