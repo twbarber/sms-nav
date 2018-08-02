@@ -20,7 +20,16 @@ router.get('/navigate', function(req, response, next) {
   console.log("URL: " + baseUrl + queryString);
 
   request.get({ url: baseUrl + queryString, json:true }, function(res, body) {  
-    response.json(body);
+    var start = body.body.routes[0].legs[0].start_address;
+    var end = body.body.routes[0].legs[0].end_address;
+    var dist = body.body.routes[0].legs[0].distance.text;
+    
+    response.setHeader("Content-Type", "text/plain"); 
+    response.send(
+      "Start: " + start + "\n" +
+      "End: " + end + "\n" +
+      "Distance: " + dist
+    );
   });
 
 });
