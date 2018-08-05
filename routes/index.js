@@ -5,7 +5,7 @@ var fs = require('fs');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'TextNav' });
+  res.render('index', { title: 'sms-nav' });
 });
 
 router.get('/navigate', function(req, response, next) {
