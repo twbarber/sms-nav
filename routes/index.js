@@ -40,10 +40,10 @@ router.get('/navigate', function(req, response, next) {
 
     response.setHeader("Content-Type", "text/plain"); 
     response.send(
-      "Start: " + start + "\n" +
-      "End: " + end + "\n" +
-      "Distance: " + dist +"\n\n" +
-      formatted.join('\n\n')
+      "Start: " + start + "\n" //+
+      //"End: " + end + "\n" +
+      //"Distance: " + dist +"\n\n" +
+      //formatted.join('\n\n')
     );
   });
 
