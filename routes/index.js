@@ -48,12 +48,12 @@ router.get('/navigate', function(req, response, next) {
 
       var strippedHtml = stepInst.replace(/<div style=\"font-size:0.9em\">/g, ". ").replace(/<\/?[^>]+(>|$)/g, "").replace(/&nbsp;/g, " ");
       
-      formatted.push(step + '.' + strippedHtml + ' - ' + stepDist);
+      formatted.push((step + 1) + '. ' + strippedHtml + ' - ' + stepDist);
     }
     
     console.log(formatted)
 
-    response.setHeader("Content-Type", "application/xm"); 
+    response.setHeader("Content-Type", "application/xml"); 
 
     var xml = wrapInResponseTemplate(start, end, dist, formatted)
     console.log(xml);
