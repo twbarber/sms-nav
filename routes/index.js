@@ -1,7 +1,21 @@
 var express = require('express');
 var router = express.Router();
 var request = require('request');
-var fs = require('fs');
+
+function toXmlMessage(content) {
+  return '<Message>' + content + '</Message>';
+}
+
+function wrapInResponseTemplate(start, end, distance, messages) {
+  var response = '<?xml version="1.0" encoding="UTF-8" ?><Response>'
+  response += toXmlMessage(
+    "Start: " + start + "&#10" + "End: " + end + "&#10" + "Distance: " + distance +"&#10"
+  );
+  for(var m in messages) {
+    response += toXmlMessage(messages[m]);
+  } 
+  return response += '</Response>';
+}
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -33,18 +47,18 @@ router.get('/navigate', function(req, response, next) {
       var stepInst = directions[step].html_instructions;
 
       var strippedHtml = stepInst.replace(/<div style=\"font-size:0.9em\">/g, ". ").replace(/<\/?[^>]+(>|$)/g, "").replace(/&nbsp;/g, " ");
-      formatted.push(stepDist + ' - ' + strippedHtml);
+      
+      formatted.push(step + '.' + strippedHtml + ' - ' + stepDist);
     }
     
     console.log(formatted)
 
-    response.setHeader("Content-Type", "text/plain"); 
-    response.send(
-      "Start: " + start + "\n" //+
-      //"End: " + end + "\n" +
-      //"Distance: " + dist +"\n\n" +
-      //formatted.join('\n\n')
-    );
+    response.setHeader("Content-Type", "application/xm"); 
+
+    var xml = wrapInResponseTemplate(start, end, dist, formatted)
+    console.log(xml);
+
+    response.send(xml);
   });
 
 });
