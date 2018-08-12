@@ -3,18 +3,30 @@ var router = express.Router();
 var request = require('request');
 
 function toXmlMessage(content) {
-  return '<Message>' + content + '</Message>';
+  return '<Message>' + escapeXml(content) + '</Message>';
 }
 
 function wrapInResponseTemplate(start, end, distance, messages) {
   var response = '<?xml version="1.0" encoding="UTF-8" ?><Response>'
   response += toXmlMessage(
-    "Start: " + start + "\n" + "End: " + end + "\n" + "Distance: " + distance +"\n"
+    "Start: " + escapeXml(start) + "\n" + "End: " + escapeXml(end) + "\n" + "Distance: " + distance +"\n"
   );
   for(var m in messages) {
     response += toXmlMessage(messages[m]);
   } 
   return response += '</Response>';
+}
+
+function escapeXml(unsafe) {
+  return unsafe.replace(/[<>&'"]/g, function (c) {
+      switch (c) {
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '&': return '&amp;';
+          case '\'': return '&apos;';
+          case '"': return '&quot;';
+      }
+  });
 }
 
 /* GET home page. */
@@ -51,8 +63,6 @@ router.get('/navigate', function(req, response, next) {
       formatted.push(stepNumber + '. ' + strippedHtml + ' - ' + stepDist);
     }
     
-    console.log(formatted)
-
     response.setHeader("Content-Type", "application/xml"); 
 
     var xml = wrapInResponseTemplate(start, end, dist, formatted)
