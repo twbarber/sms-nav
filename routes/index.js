@@ -47,8 +47,8 @@ router.get('/navigate', function(req, response, next) {
       var stepInst = directions[step].html_instructions;
 
       var strippedHtml = stepInst.replace(/<div style=\"font-size:0.9em\">/g, ". ").replace(/<\/?[^>]+(>|$)/g, "").replace(/&nbsp;/g, " ");
-      var stepOneBased = step + 1;
-      formatted.push(stepOneBased + '. ' + strippedHtml + ' - ' + stepDist);
+      var stepNumber = Number(step) + 1;
+      formatted.push(stepNumber + '. ' + strippedHtml + ' - ' + stepDist);
     }
     
     console.log(formatted)
