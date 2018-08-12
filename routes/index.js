@@ -45,7 +45,12 @@ router.get('/navigate', function(req, response, next) {
   console.log("destination: " + destination);
   console.log("URL: " + baseUrl + queryString);
 
-  request.get({ url: baseUrl + queryString, json:true }, function(res, body) {  
+  request.get({ url: baseUrl + queryString, json:true }, function(error, res, body) {  
+    
+    if(error) {
+      response.send('Sorry, the request couldn\'t be processed. Please check the origin and destination.');
+    }
+    
     var start = body.body.routes[0].legs[0].start_address;
     var end = body.body.routes[0].legs[0].end_address;
     var dist = body.body.routes[0].legs[0].distance.text;
