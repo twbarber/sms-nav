@@ -9,7 +9,7 @@ function toXmlMessage(content) {
 function wrapInResponseTemplate(start, end, distance, messages) {
   var response = '<?xml version="1.0" encoding="UTF-8" ?><Response>'
   response += toXmlMessage(
-    "Start: " + start + "&#10;" + "End: " + end + "&#10;" + "Distance: " + distance +"&#10;"
+    "Start: " + start + "\n" + "End: " + end + "\n" + "Distance: " + distance +"\n"
   );
   for(var m in messages) {
     response += toXmlMessage(messages[m]);
