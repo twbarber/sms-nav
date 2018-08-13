@@ -47,7 +47,7 @@ router.get('/navigate', function(req, response, next) {
 
   request.get({ url: baseUrl + queryString, json:true }, function(error, res, body) {  
     
-    if(error) {
+    if(error || !body.body.routes.lenth) {
       response.send('Sorry, the request couldn\'t be processed. Please check the origin and destination.');
     }
     
