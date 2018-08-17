@@ -7,7 +7,7 @@ function toXmlMessage(content) {
 }
 
 function wrapInResponseTemplate(start, end, distance, messages) {
-  var response = '<?xml version="1.0" encoding="UTF-8" ?><Response>'
+  var response = '<?xml version="1.0" encoding="UTF-8" ?><Response>';
   response += toXmlMessage(
     "Start: " + escapeXml(start) + "\n" + "End: " + escapeXml(end) + "\n" + "Distance: " + distance +"\n"
   );
@@ -51,17 +51,15 @@ router.get('/navigate', function(req, response, next) {
       response.send('Sorry, there was an error retrieving the navigation instructions. Please try again later.');
     }
 
-    console.log(body.body)
-
-    if(body.status == 'NOT_FOUND') {
+    if( body.status == 'NOT_FOUND') {
       response.send('Sorry, a route couldn\'t be determined. Please check the origin and destination.');
     }
     
-    var start = body.body.routes[0].legs[0].start_address;
-    var end = body.body.routes[0].legs[0].end_address;
-    var dist = body.body.routes[0].legs[0].distance.text;
+    var start = .routes[0].legs[0].start_address;
+    var end = .routes[0].legs[0].end_address;
+    var dist = .routes[0].legs[0].distance.text;
 
-    var directions = body.body.routes[0].legs[0].steps;
+    var directions = .routes[0].legs[0].steps;
 
     var formatted = [];
 
@@ -76,7 +74,7 @@ router.get('/navigate', function(req, response, next) {
     
     response.setHeader("Content-Type", "application/xml"); 
 
-    var xml = wrapInResponseTemplate(start, end, dist, formatted)
+    var xml = wrapInResponseTemplate(start, end, dist, formatted);
     console.log(xml);
 
     response.send(xml);
