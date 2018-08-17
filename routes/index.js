@@ -51,15 +51,15 @@ router.get('/navigate', function(req, response, next) {
       response.send('Sorry, there was an error retrieving the navigation instructions. Please try again later.');
     }
 
-    if( body.status == 'NOT_FOUND') {
+    if(body.status == 'NOT_FOUND') {
       response.send('Sorry, a route couldn\'t be determined. Please check the origin and destination.');
     }
     
-    var start = .routes[0].legs[0].start_address;
-    var end = .routes[0].legs[0].end_address;
-    var dist = .routes[0].legs[0].distance.text;
+    var start = body.routes[0].legs[0].start_address;
+    var end = body.routes[0].legs[0].end_address;
+    var dist = body.routes[0].legs[0].distance.text;
 
-    var directions = .routes[0].legs[0].steps;
+    var directions = body.routes[0].legs[0].steps;
 
     var formatted = [];
 
