@@ -48,11 +48,11 @@ router.get('/navigate', function(req, response, next) {
   request.get({ url: baseUrl + queryString, json:true }, function(error, res, body) {  
     
     if(error) {
-      response.send('Sorry, there was an error retrieving the navigation instructions. Please try again later.');
+      return response.send('Sorry, there was an error retrieving the navigation instructions. Please try again later.');
     }
 
     if(body.status == 'NOT_FOUND') {
-      response.send('Sorry, a route couldn\'t be determined. Please check the origin and destination.');
+      return response.send('Sorry, a route couldn\'t be determined. Please check the origin and destination.');
     }
     
     var start = body.routes[0].legs[0].start_address;
