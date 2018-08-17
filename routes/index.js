@@ -6,6 +6,12 @@ function toXmlMessage(content) {
   return '<Message>' + escapeXml(content) + '</Message>';
 }
 
+function errorXml(message) {
+  var response = '<?xml version="1.0" encoding="UTF-8" ?><Response>';
+  response += toXmlMessage(message);
+  return response += '</Response>';
+}
+
 function wrapInResponseTemplate(start, end, distance, messages) {
   var response = '<?xml version="1.0" encoding="UTF-8" ?><Response>';
   response += toXmlMessage(
@@ -46,13 +52,15 @@ router.get('/navigate', function(req, response, next) {
   console.log("URL: " + baseUrl + queryString);
 
   request.get({ url: baseUrl + queryString, json:true }, function(error, res, body) {  
-    
-    if(error) {
-      return response.send('Sorry, there was an error retrieving the navigation instructions. Please try again later.');
-    }
+    response.setHeader("Content-Type", "application/xml"); 
 
-    if(body.status == 'NOT_FOUND') {
-      return response.send('Sorry, a route couldn\'t be determined. Please check the origin and destination.');
+    var errorMessage = '';
+    if(error) {
+      errorMessage = 'Sorry, there was an error retrieving the navigation instructions. Please try again later.';
+      return response.send(errorXml(errorMessage));
+    } else if(body.status == 'NOT_FOUND') {
+      errorMessage = 'Sorry, a route couldn\'t be determined. Please check the origin and destination.';
+      return response.send(errorXml(errorMessage));
     }
     
     var start = body.routes[0].legs[0].start_address;
@@ -71,7 +79,7 @@ router.get('/navigate', function(req, response, next) {
       var stepNumber = Number(step) + 1;
       formatted.push(stepNumber + '. ' + strippedHtml + ' - ' + stepDist);
     }
-    
+
     response.setHeader("Content-Type", "application/xml"); 
 
     var xml = wrapInResponseTemplate(start, end, dist, formatted);
