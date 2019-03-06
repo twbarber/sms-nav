@@ -40,6 +40,13 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'sms-nav' });
 });
 
+/* GET home page. */
+router.get('/echo', function(req, res, next) {
+  var echo = req.query.Body;
+  console.log("echo: " + echo);
+  response.send(echo)
+});
+
 router.get('/navigate', function(req, response, next) {
   var search = req.query.Body;
   var origin = search.split(" to ")[0];
